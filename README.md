@@ -22,3 +22,7 @@ Note that this project has not been tested with different versions of Python.
 
 ## Demo
 Run `python demo.py` to query the defense pipeline interactively.
+
+## Local Verifier
+
+The `local_verifier/` folder contains small-scale reproductions of the paper suitable for local execution using Ollama. See `local_verifier/README.md` for details on running experiments with 7B/9B models and STACK attacks with reduced iterations.

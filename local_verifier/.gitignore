@@ -1,0 +1,7 @@
+# Exclude result files from git
+results/**/*.json
+results/**/*.log
+results/**/*.txt
+
+# Keep README files
+!results/**/README.md
