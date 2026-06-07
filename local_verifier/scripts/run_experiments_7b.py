@@ -160,12 +160,12 @@ def run_simple_perturbation_attack():
         
         if result["success"]:
             successes += 1
-            print(f"  ✅ SUCCESS - Bypassed filters!")
+            print(f"  PASSED SUCCESS - Bypassed filters!")
         else:
             if result["input_flagged"]:
-                print(f"  ❌ BLOCKED at input")
+                print(f"  BLOCKED BLOCKED at input")
             elif result["output_flagged"]:
-                print(f"  ❌ BLOCKED at output")
+                print(f"  BLOCKED BLOCKED at output")
     
     # Calculate ASR
     asr = successes / len(perturbations)
@@ -246,12 +246,12 @@ def run_suffix_optimization_attack():
         if result["success"]:
             successes += 1
             best_suffix = suffix
-            print(f"  ✅ SUCCESS - Bypassed filters!")
+            print(f"  PASSED SUCCESS - Bypassed filters!")
         else:
             if result["input_flagged"]:
-                print(f"  ❌ BLOCKED at input")
+                print(f"  BLOCKED BLOCKED at input")
             elif result["output_flagged"]:
-                print(f"  ❌ BLOCKED at output")
+                print(f"  BLOCKED BLOCKED at output")
     
     # Calculate ASR
     asr = successes / len(suffixes)

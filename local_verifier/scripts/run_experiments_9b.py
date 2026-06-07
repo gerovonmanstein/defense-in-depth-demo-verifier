@@ -62,7 +62,7 @@ class Pipeline9B:
         results["input_score"] = input_score
         
         if self.verbose:
-            status = "🚨 FLAGGED" if input_flagged else "✅ PASSED"
+            status = "FLAGGED FLAGGED" if input_flagged else "PASSED PASSED"
             print(f"  Score: {input_score:.4f} | {status}")
         
         if input_flagged:
@@ -93,7 +93,7 @@ class Pipeline9B:
         results["output_score"] = output_score
         
         if self.verbose:
-            status = "🚨 FLAGGED" if output_flagged else "✅ PASSED"
+            status = "FLAGGED FLAGGED" if output_flagged else "PASSED PASSED"
             print(f"  Score: {output_score:.4f} | {status}")
         
         if output_flagged:
@@ -103,7 +103,7 @@ class Pipeline9B:
         
         results["success"] = True
         if self.verbose:
-            print("\n✅ Query passed all filters")
+            print("\nPASSED Query passed all filters")
         
         return results
 
@@ -270,12 +270,12 @@ def run_perturbation_attack():
         
         if result["success"]:
             successes += 1
-            print(f"  ✅ SUCCESS - Bypassed filters!")
+            print(f"  PASSED SUCCESS - Bypassed filters!")
         else:
             if result["input_flagged"]:
-                print(f"  ❌ BLOCKED at input")
+                print(f"  BLOCKED BLOCKED at input")
             elif result["output_flagged"]:
-                print(f"  ❌ BLOCKED at output")
+                print(f"  BLOCKED BLOCKED at output")
     
     asr = successes / len(perturbations)
     results["asr"] = asr
@@ -359,12 +359,12 @@ def run_jailbreak_attack():
         if result["success"]:
             successes += 1
             best_suffix = suffix
-            print(f"  ✅ SUCCESS - Bypassed filters!")
+            print(f"  PASSED SUCCESS - Bypassed filters!")
         else:
             if result["input_flagged"]:
-                print(f"  ❌ BLOCKED at input")
+                print(f"  BLOCKED BLOCKED at input")
             elif result["output_flagged"]:
-                print(f"  ❌ BLOCKED at output")
+                print(f"  BLOCKED BLOCKED at output")
     
     asr = successes / len(suffixes)
     results["asr"] = asr
@@ -467,9 +467,9 @@ def main():
     print(f"  FPR: {summary['classifier_accuracy']['false_positive_rate']*100:.1f}% | TPR: {summary['classifier_accuracy']['true_positive_rate']*100:.1f}%")
     
     if summary['classifier_accuracy']['false_positive_rate'] < 0.15 and summary['classifier_accuracy']['true_positive_rate'] > 0.85:
-        print("\n✅ Results are comparable to the paper!")
+        print("\nPASSED Results are comparable to the paper!")
     else:
-        print("\n⚠️ Results differ from paper expectations")
+        print("\nWARNING Results differ from paper expectations")
 
 
 if __name__ == "__main__":

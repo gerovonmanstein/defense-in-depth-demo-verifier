@@ -44,20 +44,20 @@ def check_hardware_requirements():
         )
         if result.returncode == 0:
             gpu_info = result.stdout.strip()
-            print(f"  ✅ GPU Found: {gpu_info}")
+            print(f"  PASSED GPU Found: {gpu_info}")
             # Check VRAM
             if "16" in gpu_info or "24" in gpu_info or "32" in gpu_info:
-                print(f"  ✅ Sufficient VRAM detected")
+                print(f"  PASSED Sufficient VRAM detected")
             else:
-                print(f"  ⚠️  Warning: May have limited VRAM")
+                print(f"  WARNING  Warning: May have limited VRAM")
         else:
-            print(f"  ❌ nvidia-smi failed")
+            print(f"  BLOCKED nvidia-smi failed")
             checks_passed = False
     except FileNotFoundError:
-        print(f"  ❌ nvidia-smi not found - GPU may not be available")
+        print(f"  BLOCKED nvidia-smi not found - GPU may not be available")
         checks_passed = False
     except Exception as e:
-        print(f"  ❌ Error checking GPU: {e}")
+        print(f"  BLOCKED Error checking GPU: {e}")
         checks_passed = False
     
     # Check 2: CUDA
@@ -69,27 +69,27 @@ def check_hardware_requirements():
         )
         if result.returncode == 0:
             cuda_info = result.stdout.strip()
-            print(f"  ✅ CUDA Available: {cuda_info}")
+            print(f"  PASSED CUDA Available: {cuda_info}")
         else:
-            print(f"  ⚠️  Could not verify CUDA version")
+            print(f"  WARNING  Could not verify CUDA version")
     except Exception as e:
-        print(f"  ⚠️  Could not verify CUDA: {e}")
+        print(f"  WARNING  Could not verify CUDA: {e}")
     
     # Check 3: Ollama service
     print("\n[3/5] Checking Ollama service...")
     try:
         response = requests.get('http://localhost:11434/api/tags', timeout=5)
         if response.status_code == 200:
-            print(f"  ✅ Ollama service is running")
+            print(f"  PASSED Ollama service is running")
         else:
-            print(f"  ❌ Ollama service returned status {response.status_code}")
+            print(f"  BLOCKED Ollama service returned status {response.status_code}")
             checks_passed = False
     except requests.exceptions.ConnectionError:
-        print(f"  ❌ Cannot connect to Ollama (http://localhost:11434)")
+        print(f"  BLOCKED Cannot connect to Ollama (http://localhost:11434)")
         print(f"     Please start Ollama: ollama serve")
         checks_passed = False
     except Exception as e:
-        print(f"  ❌ Error checking Ollama: {e}")
+        print(f"  BLOCKED Error checking Ollama: {e}")
         checks_passed = False
     
     # Check 4: Required models
@@ -104,19 +104,19 @@ def check_hardware_requirements():
             all_models_present = True
             for model in required_models:
                 if any(model in name for name in model_names):
-                    print(f"  ✅ {model} - Found")
+                    print(f"  PASSED {model} - Found")
                 else:
-                    print(f"  ❌ {model} - Missing")
+                    print(f"  BLOCKED {model} - Missing")
                     print(f"     Please run: ollama pull {model}")
                     all_models_present = False
                     checks_passed = False
             
             if all_models_present:
-                print(f"  ✅ All required models are available")
+                print(f"  PASSED All required models are available")
         else:
-            print(f"  ⚠️  Could not verify models")
+            print(f"  WARNING  Could not verify models")
     except Exception as e:
-        print(f"  ⚠️  Could not check models: {e}")
+        print(f"  WARNING  Could not check models: {e}")
     
     # Check 5: GPU usage by Ollama
     print("\n[5/5] Checking if Ollama uses GPU...")
@@ -128,7 +128,7 @@ def check_hardware_requirements():
             timeout=30
         )
         if response.status_code == 200:
-            print(f"  ✅ Ollama can generate responses")
+            print(f"  PASSED Ollama can generate responses")
             
             # Check GPU usage
             result = subprocess.run(
@@ -136,26 +136,26 @@ def check_hardware_requirements():
                 capture_output=True, text=True, timeout=5
             )
             if result.returncode == 0 and 'ollama' in result.stdout.lower():
-                print(f"  ✅ Ollama is using GPU:")
+                print(f"  PASSED Ollama is using GPU:")
                 for line in result.stdout.strip().split('\n'):
                     if 'ollama' in line.lower():
                         print(f"     {line}")
             else:
-                print(f"  ⚠️  Warning: Could not confirm GPU usage by Ollama")
+                print(f"  WARNING  Warning: Could not confirm GPU usage by Ollama")
                 print(f"     Ollama should automatically use GPU if available")
         else:
-            print(f"  ❌ Ollama generation test failed")
+            print(f"  BLOCKED Ollama generation test failed")
             checks_passed = False
     except Exception as e:
-        print(f"  ⚠️  Could not test Ollama GPU usage: {e}")
+        print(f"  WARNING  Could not test Ollama GPU usage: {e}")
     
     print("\n" + "="*80)
     if checks_passed:
-        print("✅ ALL CRITICAL CHECKS PASSED")
+        print("PASSED ALL CRITICAL CHECKS PASSED")
         print("="*80)
         return True
     else:
-        print("❌ SOME CHECKS FAILED")
+        print("BLOCKED SOME CHECKS FAILED")
         print("="*80)
         print("\nPlease fix the issues above before running the attack.")
         return False
@@ -425,7 +425,7 @@ class StackAttackGPUOptimized:
         )
         
         icj_time = (datetime.now() - start_time).total_seconds() / 60
-        self.log(f"✅ ICJ completed in {icj_time:.1f} minutes")
+        self.log(f"PASSED ICJ completed in {icj_time:.1f} minutes")
         
         # Save ICJ result immediately
         results["icj"] = icj
@@ -459,7 +459,7 @@ class StackAttackGPUOptimized:
         )
         
         ocj_time = (datetime.now() - start_time).total_seconds() / 60
-        self.log(f"✅ OCJ completed in {ocj_time:.1f} minutes")
+        self.log(f"PASSED OCJ completed in {ocj_time:.1f} minutes")
         
         # Save OCJ result immediately
         results["ocj"] = ocj
@@ -508,7 +508,7 @@ Now here is the actual query: {query}"""
             
             self.log(f"Input Classifier:")
             self.log(f"  Score: {input_score:.4f}")
-            self.log(f"  Status: {'✅ PASSED' if input_passed else '❌ BLOCKED'}")
+            self.log(f"  Status: {'PASSED PASSED' if input_passed else 'BLOCKED BLOCKED'}")
             
             if not input_passed:
                 input_blocks += 1
@@ -522,7 +522,7 @@ Now here is the actual query: {query}"""
                 results["results"].append(result)
                 results["input_blocks"] = input_blocks
                 self.save_intermediate_results(results)
-                self.log(f"\n❌ BLOCKED at input classifier")
+                self.log(f"\nBLOCKED BLOCKED at input classifier")
                 continue
             
             # Generate response
@@ -537,15 +537,15 @@ Now here is the actual query: {query}"""
             
             self.log(f"Output Classifier:")
             self.log(f"  Score: {output_score:.4f}")
-            self.log(f"  Status: {'✅ PASSED' if output_passed else '❌ BLOCKED'}")
+            self.log(f"  Status: {'PASSED PASSED' if output_passed else 'BLOCKED BLOCKED'}")
             
             success = input_passed and output_passed
             if success:
                 successes += 1
-                self.log(f"\n✅ SUCCESS - Bypassed both classifiers!")
+                self.log(f"\nPASSED SUCCESS - Bypassed both classifiers!")
             else:
                 output_blocks += 1
-                self.log(f"\n❌ BLOCKED at output classifier")
+                self.log(f"\nBLOCKED BLOCKED at output classifier")
             
             result = {
                 "query": query,
@@ -567,7 +567,7 @@ Now here is the actual query: {query}"""
             self.save_intermediate_results(results)
         
         test_time = (datetime.now() - start_time).total_seconds() / 60
-        self.log(f"\n✅ End-to-end testing completed in {test_time:.1f} minutes")
+        self.log(f"\nPASSED End-to-end testing completed in {test_time:.1f} minutes")
         
         asr = successes / len(harmful_queries) if harmful_queries else 0.0
         
@@ -600,7 +600,7 @@ def main():
     """Run GPU-optimized STACK attack."""
     # First, check hardware requirements
     if not check_hardware_requirements():
-        print("\n❌ Exiting due to failed hardware checks.")
+        print("\nBLOCKED Exiting due to failed hardware checks.")
         sys.exit(1)
     
     timestamp = datetime.now().strftime("%Y%m%d_%H%M")
@@ -688,19 +688,19 @@ def main():
         print(f"  - End-to-end testing: {results['timing']['test_minutes']:.1f} min")
         print("="*80)
         print(f"\nEnd time: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
-        print(f"\n✅ Results saved to: {results_file}")
-        print(f"✅ Log saved to: {log_file}")
+        print(f"\nPASSED Results saved to: {results_file}")
+        print(f"PASSED Log saved to: {log_file}")
         
     except KeyboardInterrupt:
         print("\n\n" + "="*80)
-        print("⚠️  INTERRUPTED BY USER")
+        print("WARNING  INTERRUPTED BY USER")
         print("="*80)
         print(f"Partial results saved to: {results_file}")
         print(f"Log saved to: {log_file}")
         print("You can resume or analyze partial results.")
         print("="*80)
     except Exception as e:
-        print(f"\n\n❌ ERROR: {e}")
+        print(f"\n\nBLOCKED ERROR: {e}")
         print(f"Partial results saved to: {results_file}")
         print(f"Log saved to: {log_file}")
         raise

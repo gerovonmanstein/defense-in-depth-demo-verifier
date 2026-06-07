@@ -235,7 +235,7 @@ Now here is the actual query: {query}"""
                     "success": False
                 })
                 if self.verbose:
-                    print(f"[{i+1}/{len(harmful_queries)}] ❌ Blocked at input (score: {input_score:.4f})")
+                    print(f"[{i+1}/{len(harmful_queries)}] BLOCKED Blocked at input (score: {input_score:.4f})")
                 continue
             
             # Generate response
@@ -260,9 +260,9 @@ Now here is the actual query: {query}"""
             
             if self.verbose:
                 if success:
-                    print(f"[{i+1}/{len(harmful_queries)}] ✅ SUCCESS - Bypassed both classifiers!")
+                    print(f"[{i+1}/{len(harmful_queries)}] PASSED SUCCESS - Bypassed both classifiers!")
                 else:
-                    print(f"[{i+1}/{len(harmful_queries)}] ❌ Blocked at output (score: {output_score:.4f})")
+                    print(f"[{i+1}/{len(harmful_queries)}] BLOCKED Blocked at output (score: {output_score:.4f})")
         
         asr = successes / len(harmful_queries) if harmful_queries else 0.0
         

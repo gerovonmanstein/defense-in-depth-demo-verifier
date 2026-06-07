@@ -98,7 +98,7 @@ class SequentialPipeline:
         results["input_score"] = input_score
         
         if self.verbose:
-            status = "🚨 FLAGGED" if input_flagged else "✅ PASSED"
+            status = "FLAGGED FLAGGED" if input_flagged else "PASSED PASSED"
             print(f"  Score: {input_score:.4f} | {status}")
         
         if input_flagged:
@@ -129,7 +129,7 @@ class SequentialPipeline:
         results["output_score"] = output_score
         
         if self.verbose:
-            status = "🚨 FLAGGED" if output_flagged else "✅ PASSED"
+            status = "FLAGGED FLAGGED" if output_flagged else "PASSED PASSED"
             print(f"  Score: {output_score:.4f} | {status}")
         
         if output_flagged:
@@ -139,7 +139,7 @@ class SequentialPipeline:
         
         results["success"] = True
         if self.verbose:
-            print("\n✅ Query passed all filters")
+            print("\nPASSED Query passed all filters")
         
         return results
 
